@@ -1,0 +1,31 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-color: #FFFDF6;
+    --primary: #FFDE4D;
+    --accent: #00E6FF;
+    --danger: #FF5252;
+    --dark: #000000;
+    --brutal-shadow: 5px 5px 0px 0px #000000;
+    --brutal-shadow-active: 1px 1px 0px 0px #000000;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--dark);
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+h1, h2 { font-family: 'Syne', sans-serif; }
+
+/* Brutalist Text Selection */
+::selection {
+    background: var(--dark);
+    color: var(--primary);
+}
+::-moz-selection {
+    background: var(--dark);
+    color: var(--primary);
+}

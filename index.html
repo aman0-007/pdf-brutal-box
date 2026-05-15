@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF // BRUTAL_BOX</title>
+    
+    <!-- Modular CSS -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/tools.css">
+    
+    <!-- ULTRA-SHARP BRUTALIST FAVICON -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='68' x='15' font-family='sans-serif' font-weight='900' font-size='42' fill='%2300E6FF'>PDF</text></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="brutal-header">
+            <h1>PDF // BRUTAL_BOX</h1>
+            <p>100% CLIENT-SIDE. NO DATA LEAKS. PURE GEOMETRY.</p>
+        </header>
+
+        <main class="main-container">
+            <nav class="tool-sidebar">
+                <button class="nav-btn active" data-target="tool-merge">📁 MERGE PDF</button>
+                <button class="nav-btn" data-target="tool-rotate">🔄 ROTATE / DELETE</button>
+                <button class="nav-btn" data-target="tool-img2pdf">🖼️ IMAGE ➔ PDF</button>
+                <button class="nav-btn" data-target="tool-pdf2img">🖨️ PDF ➔ IMAGE</button>
+                <button class="nav-btn" data-target="tool-split">✂️ SPLIT / EXTRACT</button>
+                <button class="nav-btn" data-target="tool-watermark">©️ WATERMARK</button>
+                <button class="nav-btn" data-target="tool-sign">✍️ E-SIGNATURE</button>
+                <button class="nav-btn" data-target="tool-reorder-pages">🔄 REORDER PAGES</button>
+                <button class="nav-btn" data-target="tool-compress">🗜️ COMPRESS</button>
+                <button class="nav-btn" data-target="tool-stamp">🔢 AUTO-STAMPER</button>
+                <button class="nav-btn" data-target="tool-ghost">🕵️ NUKE METADATA</button>
+            </nav>
+
+            <section class="workspace">
+                <div id="drop-zone" class="brutal-dropzone">
+                    <p class="dropzone-text">DRAG & DROP FILES HERE OR <span class="underline">BROWSE</span></p>
+                    <input type="file" id="file-input" multiple accept=".pdf,.png,.jpg,.jpeg" hidden>
+                </div>
+
+                <!-- MERGE TOOL -->
+                <div id="tool-merge" class="tool-view active-view">
+                    <h2>// MERGE MULTIPLE PDFs</h2>
+                    <div id="merge-list" class="file-manifest">No files loaded yet.</div>
+                    <button id="process-merge" class="action-btn" disabled>EXECUTE MERGE ➔</button>
+                </div>
+
+                <!-- ROTATE / DELETE TOOL -->
+                <div id="tool-rotate" class="tool-view">
+                    <h2>// MANAGE PAGES (1 PDF at a time)</h2>
+                    <div class="control-bar">
+                        <button id="rotate-selected" class="sub-btn" disabled>ROTATE 90°</button>
+                        <button id="delete-selected" class="sub-btn delete" disabled>DELETE SELECTED</button>
+                        <button id="export-modified" class="action-btn small-action" disabled>EXPORT PDF ➔</button>
+                    </div>
+                    <div id="pages-preview-grid" class="preview-grid"></div>
+                </div>
+
+                <!-- IMAGE TO PDF TOOL -->
+                <div id="tool-img2pdf" class="tool-view">
+                    <h2>// CONVERT IMAGES TO PDF</h2>
+                    <div id="img-list" class="file-manifest">No images loaded yet.</div>
+                    <button id="process-img2pdf" class="action-btn" disabled>CONVERT TO PDF ➔</button>
+                </div>
+
+                <!-- PDF TO IMAGE TOOL -->
+                <div id="tool-pdf2img" class="tool-view">
+                    <h2>// THE SHREDDER (PDF ➔ IMAGES)</h2>
+                    <p class="manifest-item" id="pdf2img-status">Load a PDF to extract pages.</p>
+                    
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <select id="pdf2img-format" class="brutal-input">
+                            <option value="image/png">PNG FORMAT</option>
+                            <option value="image/jpeg">JPG FORMAT</option>
+                        </select>
+                        <select id="pdf2img-scale" class="brutal-input">
+                            <option value="1.5">STANDARD QUALITY</option>
+                            <option value="3.0">MAX QUALITY (HQ)</option>
+                        </select>
+                    </div>
+                    
+                    <p style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;">CLICK ✖ TO REMOVE PAGES YOU DO NOT WANT TO EXTRACT:</p>
+                    <div id="pdf2img-preview-grid" class="preview-grid" style="margin-top: 10px;"></div>
+                    
+                    <button id="process-pdf2img" class="action-btn" disabled>DOWNLOAD AS .ZIP ➔</button>
+                </div>
+
+                <!-- SPLIT / EXTRACT TOOL -->
+                <div id="tool-split" class="tool-view">
+                    <h2>// EXTRACT PAGES</h2>
+                    <p class="manifest-item" id="split-status">Load a PDF to extract pages.</p>
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <input type="number" id="split-start" class="brutal-input" placeholder="Start Page (e.g. 1)" min="1">
+                        <input type="number" id="split-end" class="brutal-input" placeholder="End Page" min="1">
+                    </div>
+                    <button id="process-split" class="action-btn" disabled>EXTRACT RANGE ➔</button>
+                </div>
+
+                <!-- WATERMARK TOOL -->
+                <div id="tool-watermark" class="tool-view">
+                    <h2>// APPLY WATERMARK</h2>
+                    <p class="manifest-item" id="watermark-status">Load a PDF to stamp.</p>
+                    
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <select id="watermark-type" class="brutal-input">
+                            <option value="text">TEXT WATERMARK</option>
+                            <option value="image">IMAGE WATERMARK</option>
+                        </select>
+                        
+                        <!-- Text Input (Default) -->
+                        <input type="text" id="watermark-text" class="brutal-input" placeholder="CONFIDENTIAL" value="CONFIDENTIAL">
+                        
+                        <!-- Image Input (Hidden by default) -->
+                        <input type="file" id="watermark-img-upload" class="brutal-input" accept=".png,.jpg,.jpeg" style="display: none;">
+                    </div>
+                    
+                    <button id="process-watermark" class="action-btn" disabled>STAMP ALL PAGES ➔</button>
+                </div>
+
+                <!-- E-SIGNATURE TOOL -->
+                <div id="tool-sign" class="tool-view">
+                    <h2>// E-SIGNATURE</h2>
+                    <p class="manifest-item" id="sign-status">Load a PDF to sign.</p>
+                    
+                    <!-- Signature Input Mode -->
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <select id="sign-mode" class="brutal-input">
+                            <option value="draw">DRAW SIGNATURE</option>
+                            <option value="upload">UPLOAD IMAGE</option>
+                        </select>
+                        <input type="file" id="sign-img-upload" class="brutal-input" accept=".png" style="display: none;">
+                    </div>
+
+                    <!-- Drawing Pad -->
+                    <div class="signature-pad-container" id="sign-pad-wrapper" style="margin-top: 10px;">
+                        <canvas id="signature-pad" width="400" height="200" style="border: 4px solid #000; background: #fff; cursor: crosshair; touch-action: none; max-width: 100%;"></canvas>
+                        <button id="clear-signature" class="sub-btn delete" style="display: block; margin-top: 10px;">CLEAR INK</button>
+                    </div>
+
+                    <!-- Placement Controls -->
+                    <div class="control-bar" style="margin-top: 20px;">
+                        <select id="sign-page" class="brutal-input">
+                            <option value="first">FIRST PAGE</option>
+                            <option value="last">LAST PAGE</option>
+                        </select>
+                        <select id="sign-position" class="brutal-input">
+                            <option value="bottom-right">BOTTOM RIGHT</option>
+                            <option value="bottom-left">BOTTOM LEFT</option>
+                            <option value="top-right">TOP RIGHT</option>
+                            <option value="top-left">TOP LEFT</option>
+                        </select>
+                    </div>
+                    <button id="process-sign" class="action-btn" disabled>EMBED SIGNATURE ➔</button>
+                </div>
+
+                <!-- REORDER PAGES TOOL -->
+                <div id="tool-reorder-pages" class="tool-view">
+                    <h2>// REORDER PAGES</h2>
+                    <p class="manifest-item" id="reorder-status">Load a PDF to reorder its pages.</p>
+                    <p style="margin-top: 10px; font-weight: bold; font-size: 0.9rem;">DRAG AND DROP PAGES TO REORDER:</p>
+                    
+                    <div id="reorder-preview-grid" class="preview-grid" style="margin-top: 15px;"></div>
+                    
+                    <button id="process-reorder" class="action-btn" disabled>EXPORT REORDERED PDF ➔</button>
+                </div>
+
+                <!-- COMPRESS TOOL -->
+                <div id="tool-compress" class="tool-view">
+                    <h2>// COMPRESS PDF</h2>
+                    <p class="manifest-item" id="compress-status">Load a PDF to optimize object streams.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem;"><i>Note: This performs structural optimization. It removes dead objects and compresses metadata.</i></p>
+                    
+                    <button id="process-compress" class="action-btn" disabled>OPTIMIZE & COMPRESS ➔</button>
+                </div>
+
+                <!-- AUTO-STAMPER TOOL -->
+                <div id="tool-stamp" class="tool-view">
+                    <h2>// AUTO-STAMPER (PAGE NUMBERS)</h2>
+                    <p class="manifest-item" id="stamp-status">Load a PDF to embed page numbers.</p>
+                    
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <select id="stamp-position" class="brutal-input">
+                            <option value="bottom">BOTTOM CENTER</option>
+                            <option value="top">TOP CENTER</option>
+                        </select>
+                        <!-- Allows the user to customize the text format -->
+                        <input type="text" id="stamp-format" class="brutal-input" value="Page {n} of {total}" style="width: 250px;">
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.85rem; font-weight: bold;"><i>Use {n} for current page, and {total} for total pages.</i></p>
+                    
+                    <button id="process-stamp" class="action-btn" disabled>STAMP ALL PAGES ➔</button>
+                </div>
+
+                <!-- METADATA GHOST TOOL -->
+                <div id="tool-ghost" class="tool-view">
+                    <h2>// THE GHOST (METADATA NUKE)</h2>
+                    <p class="manifest-item" id="ghost-status">Load a PDF to scrub its hidden data.</p>
+                    <p style="margin-top: 15px; font-weight: bold; font-size: 1.1rem; color: var(--danger); border: 3px solid var(--danger); padding: 15px; background: #fff;">
+                        ⚠️ WARNING: This will permanently erase the document's Author, Title, Software Origins, Keywords, and Creation/Modification Dates.
+                    </p>
+                    
+                    <button id="process-ghost" class="action-btn" style="background: var(--danger); color: white;" disabled>☢️ EXECUTE METADATA WIPE</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- THE BRUTAL FOOTER -->
+    <footer class="brutal-footer-box">
+        <div class="footer-content">
+            <h3>FREE TO USE // NO DATA STOLEN // PURE ANARCHY</h3>
+            <p>Your files never leave this browser window. Built with geometry and spite.</p>
+        </div>
+    </footer>
+
+    <!-- Modular JS -->
+    <script src="js/core.js"></script>
+    <script src="js/merge.js"></script>
+    <script src="js/rotate.js"></script>
+    <script src="js/img2pdf.js"></script>
+    <script src="js/pdf2img.js"></script>
+    <script src="js/split.js"></script>
+    <script src="js/watermark.js"></script>
+    <script src="js/sign.js"></script>
+    <script src="js/compress.js"></script>
+    <script src="js/reorder.js"></script>
+    <script src="js/stamp.js"></script>
+    <script src="js/ghost.js"></script>
+</body>
+</html>
