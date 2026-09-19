@@ -1,4 +1,4 @@
-const CACHE_NAME = 'brutal-pdf-box-v1.2';
+const CACHE_NAME = 'brutal-pdf-box-v1.3';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -39,22 +39,31 @@ const EXTERNAL_LIBRARIES = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
-      // Precache local assets
-      await cache.addAll(PRECACHE_ASSETS);
+      // Precache local assets with resilience
+      await Promise.allSettled(
+        PRECACHE_ASSETS.map(async (asset) => {
+          try {
+            await cache.add(asset);
+          } catch (err) {
+            console.warn('[SW] Non-blocking precache note for:', asset);
+          }
+        })
+      );
       // Try precaching external libraries non-critically
       for (const url of EXTERNAL_LIBRARIES) {
         try {
           const response = await fetch(url, { mode: 'cors' });
-          if (response.ok) {
+          if (response && response.ok) {
             await cache.put(url, response);
           }
         } catch (e) {
-          console.warn('[SW] Non-critical precache failed for:', url);
+          // non-critical external asset
         }
       }
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 

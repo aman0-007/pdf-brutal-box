@@ -5,6 +5,19 @@ const app = express();
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
+// Set PWA-specific headers for Service Worker and Web App Manifest
+app.use((req, res, next) => {
+  if (req.path === '/sw.js') {
+    res.setHeader('Service-Worker-Allowed', '/');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+  } else if (req.path === '/manifest.json') {
+    res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  }
+  next();
+});
+
 // Serve static assets
 app.use(express.static(__dirname));
 
@@ -16,3 +29,4 @@ app.get('*', (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}`);
 });
+
