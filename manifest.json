@@ -1,12 +1,12 @@
 {
-  "id": "/",
+  "id": "./",
   "name": "PDF // BRUTAL_BOX",
   "short_name": "BrutalPDF",
   "description": "100% client-side, privacy-first PDF manipulation toolkit with zero data leaks.",
   "lang": "en",
   "dir": "ltr",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "prefer_related_applications": false,
@@ -15,19 +15,19 @@
   "categories": ["utilities", "productivity"],
   "icons": [
     {
-      "src": "/pwa-192x192.png",
+      "src": "./pwa-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-512x512.png",
+      "src": "./pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-maskable-512x512.png",
+      "src": "./pwa-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

@@ -10,7 +10,7 @@
     // 1. SERVICE WORKER REGISTRATION
     function registerServiceWorker() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
                 .then((registration) => {
                     console.log('[PWA] Service Worker registered. Scope:', registration.scope);
 

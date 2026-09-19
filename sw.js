@@ -1,31 +1,31 @@
 const CACHE_NAME = 'brutal-pdf-box-v1.3';
 const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/favicon.png',
-  '/icon.svg',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png',
-  '/pwa-maskable-512x512.png',
-  '/apple-touch-icon.png',
-  '/css/base.css',
-  '/css/layout.css',
-  '/css/tools.css',
-  '/js/pwa.js',
-  '/js/core.js',
-  '/js/merge.js',
-  '/js/rotate.js',
-  '/js/img2pdf.js',
-  '/js/pdf2img.js',
-  '/js/split.js',
-  '/js/watermark.js',
-  '/js/sign.js',
-  '/js/reorder.js',
-  '/js/compress.js',
-  '/js/stamp.js',
-  '/js/ghost.js',
-  '/js/encrypt.js'
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.png',
+  './icon.svg',
+  './pwa-192x192.png',
+  './pwa-512x512.png',
+  './pwa-maskable-512x512.png',
+  './apple-touch-icon.png',
+  './css/base.css',
+  './css/layout.css',
+  './css/tools.css',
+  './js/pwa.js',
+  './js/core.js',
+  './js/merge.js',
+  './js/rotate.js',
+  './js/img2pdf.js',
+  './js/pdf2img.js',
+  './js/split.js',
+  './js/watermark.js',
+  './js/sign.js',
+  './js/reorder.js',
+  './js/compress.js',
+  './js/stamp.js',
+  './js/ghost.js',
+  './js/encrypt.js'
 ];
 
 // External CDN dependencies to cache on access or install
@@ -95,17 +95,7 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => caches.match('/index.html') || caches.match('/'))
-    );
-    return;
-  }
-
-  // Same-origin or CDN resources: Cache First, fallback to Network, with background update
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Asynchronously update cache in background
-        fetch(request)
+        .catch(() => caches.match('./index.html') || caches.match('./'))
           .then((networkResponse) => {
             if (networkResponse && networkResponse.ok) {
               caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
