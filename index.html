@@ -2,16 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>PDF // BRUTAL_BOX</title>
+    <meta name="description" content="100% client-side, privacy-first PDF manipulation toolkit with zero data leaks. Merge, split, encrypt, reorder, and stamp PDFs locally.">
+
+    <!-- PWA Manifest & Mobile Standalone Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BrutalPDF">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
     <!-- Modular CSS -->
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/tools.css">
-    
-    <!-- ULTRA-SHARP BRUTALIST FAVICON -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='68' x='15' font-family='sans-serif' font-weight='900' font-size='42' fill='%2300E6FF'>PDF</text></svg>">
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -21,41 +32,103 @@
 <body>
     <div class="app-wrapper">
         <header class="brutal-header">
+            <div class="header-meta-bar">
+                <span class="system-tag"><span class="status-dot"></span> CLIENT-SIDE ENGINE</span>
+                <span class="privacy-tag">100% PRIVATE // ZERO SERVER UPLOADS</span>
+            </div>
             <h1>PDF // BRUTAL_BOX</h1>
-            <p>100% CLIENT-SIDE. NO DATA LEAKS. PURE GEOMETRY.</p>
+            <p class="brutal-header-subtitle">ZERO DATA LEAKS. INSTANT PROCESSING. PURE GEOMETRY.</p>
         </header>
 
         <main class="main-container">
             <nav class="tool-sidebar">
-                <button class="nav-btn active" data-target="tool-merge">📁 MERGE PDF</button>
-                <button class="nav-btn" data-target="tool-rotate">🔄 ROTATE / DELETE</button>
-                <button class="nav-btn" data-target="tool-img2pdf">🖼️ IMAGE ➔ PDF</button>
-                <button class="nav-btn" data-target="tool-pdf2img">🖨️ PDF ➔ IMAGE</button>
-                <button class="nav-btn" data-target="tool-split">✂️ SPLIT / EXTRACT</button>
-                <button class="nav-btn" data-target="tool-watermark">©️ WATERMARK</button>
-                <button class="nav-btn" data-target="tool-sign">✍️ E-SIGNATURE</button>
-                <button class="nav-btn" data-target="tool-reorder-pages">🔄 REORDER PAGES</button>
-                <button class="nav-btn" data-target="tool-compress">🗜️ COMPRESS</button>
-                <button class="nav-btn" data-target="tool-stamp">🔢 AUTO-STAMPER</button>
-                <button class="nav-btn" data-target="tool-ghost">🕵️ NUKE METADATA</button>
+                <div class="sidebar-title">
+                    <span>// TOOLBOX</span>
+                    <span>[12 TOOLS]</span>
+                </div>
+                <button class="nav-btn active" data-target="tool-merge">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                    <span>MERGE PDF</span>
+                </button>
+                <button class="nav-btn" data-target="tool-rotate">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6"/><path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-1.19"/></svg>
+                    <span>ROTATE / DELETE</span>
+                </button>
+                <button class="nav-btn" data-target="tool-img2pdf">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <span>IMAGE ➔ PDF</span>
+                </button>
+                <button class="nav-btn" data-target="tool-pdf2img">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <span>PDF ➔ IMAGE</span>
+                </button>
+                <button class="nav-btn" data-target="tool-split">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                    <span>SPLIT / EXTRACT</span>
+                </button>
+                <button class="nav-btn" data-target="tool-watermark">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M14.83 9.17a4 4 0 1 0 0 5.66"/></svg>
+                    <span>WATERMARK</span>
+                </button>
+                <button class="nav-btn" data-target="tool-sign">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><line x1="15" y1="5" x2="19" y2="9"/></svg>
+                    <span>E-SIGNATURE</span>
+                </button>
+                <button class="nav-btn" data-target="tool-reorder-pages">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><polyline points="17 4 20 6 17 8"/><polyline points="7 16 4 18 7 20"/></svg>
+                    <span>REORDER PAGES</span>
+                </button>
+                <button class="nav-btn" data-target="tool-compress">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                    <span>COMPRESS</span>
+                </button>
+                <button class="nav-btn" data-target="tool-stamp">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+                    <span>AUTO-STAMPER</span>
+                </button>
+                <button class="nav-btn" data-target="tool-ghost">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>NUKE METADATA</span>
+                </button>
+                <button class="nav-btn" data-target="tool-encrypt">
+                    <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>ENCRYPT / LOCK</span>
+                </button>
             </nav>
 
             <section class="workspace">
                 <div id="drop-zone" class="brutal-dropzone">
-                    <p class="dropzone-text">DRAG & DROP FILES HERE OR <span class="underline">BROWSE</span></p>
+                    <div class="dropzone-icon">
+                        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <p class="dropzone-text">
+                        <span class="desktop-drop-text">DRAG & DROP FILES HERE OR <span class="underline">BROWSE</span></span>
+                        <span class="mobile-drop-text">TAP TO SELECT FILES OR <span class="underline">BROWSE</span></span>
+                    </p>
+                    <div class="dropzone-tags">
+                        <span class="drop-tag">.PDF</span>
+                        <span class="drop-tag">.PNG</span>
+                        <span class="drop-tag">.JPG</span>
+                    </div>
                     <input type="file" id="file-input" multiple accept=".pdf,.png,.jpg,.jpeg" hidden>
                 </div>
 
                 <!-- MERGE TOOL -->
                 <div id="tool-merge" class="tool-view active-view">
-                    <h2>// MERGE MULTIPLE PDFs</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// MERGE MULTIPLE PDFs</h2>
+                        <button id="reset-merge" class="reset-btn" onclick="MergeModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <div id="merge-list" class="file-manifest">No files loaded yet.</div>
                     <button id="process-merge" class="action-btn" disabled>EXECUTE MERGE ➔</button>
                 </div>
 
                 <!-- ROTATE / DELETE TOOL -->
                 <div id="tool-rotate" class="tool-view">
-                    <h2>// MANAGE PAGES (1 PDF at a time)</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// MANAGE PAGES (1 PDF at a time)</h2>
+                        <button id="reset-rotate" class="reset-btn" onclick="RotateModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <div class="control-bar">
                         <button id="rotate-selected" class="sub-btn" disabled>ROTATE 90°</button>
                         <button id="delete-selected" class="sub-btn delete" disabled>DELETE SELECTED</button>
@@ -66,14 +139,20 @@
 
                 <!-- IMAGE TO PDF TOOL -->
                 <div id="tool-img2pdf" class="tool-view">
-                    <h2>// CONVERT IMAGES TO PDF</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// CONVERT IMAGES TO PDF</h2>
+                        <button id="reset-img2pdf" class="reset-btn" onclick="Img2PdfModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <div id="img-list" class="file-manifest">No images loaded yet.</div>
                     <button id="process-img2pdf" class="action-btn" disabled>CONVERT TO PDF ➔</button>
                 </div>
 
                 <!-- PDF TO IMAGE TOOL -->
                 <div id="tool-pdf2img" class="tool-view">
-                    <h2>// THE SHREDDER (PDF ➔ IMAGES)</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// THE SHREDDER (PDF ➔ IMAGES)</h2>
+                        <button id="reset-pdf2img" class="reset-btn" onclick="Pdf2ImgModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="pdf2img-status">Load a PDF to extract pages.</p>
                     
                     <div class="control-bar" style="margin-top: 15px;">
@@ -87,7 +166,9 @@
                         </select>
                     </div>
                     
-                    <p style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;">CLICK ✖ TO REMOVE PAGES YOU DO NOT WANT TO EXTRACT:</p>
+                    <p style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;">
+                        CLICK <span class="badge-hint"><svg class="inline-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> TO REMOVE PAGES YOU DO NOT WANT TO EXTRACT:
+                    </p>
                     <div id="pdf2img-preview-grid" class="preview-grid" style="margin-top: 10px;"></div>
                     
                     <button id="process-pdf2img" class="action-btn" disabled>DOWNLOAD AS .ZIP ➔</button>
@@ -95,7 +176,10 @@
 
                 <!-- SPLIT / EXTRACT TOOL -->
                 <div id="tool-split" class="tool-view">
-                    <h2>// EXTRACT PAGES</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// EXTRACT PAGES</h2>
+                        <button id="reset-split" class="reset-btn" onclick="SplitModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="split-status">Load a PDF to extract pages.</p>
                     <div class="control-bar" style="margin-top: 15px;">
                         <input type="number" id="split-start" class="brutal-input" placeholder="Start Page (e.g. 1)" min="1">
@@ -106,7 +190,10 @@
 
                 <!-- WATERMARK TOOL -->
                 <div id="tool-watermark" class="tool-view">
-                    <h2>// APPLY WATERMARK</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// APPLY WATERMARK</h2>
+                        <button id="reset-watermark" class="reset-btn" onclick="WatermarkModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="watermark-status">Load a PDF to stamp.</p>
                     
                     <div class="control-bar" style="margin-top: 15px;">
@@ -127,7 +214,10 @@
 
                 <!-- E-SIGNATURE TOOL -->
                 <div id="tool-sign" class="tool-view">
-                    <h2>// E-SIGNATURE</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// E-SIGNATURE</h2>
+                        <button id="reset-sign" class="reset-btn" onclick="SignModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="sign-status">Load a PDF to sign.</p>
                     
                     <!-- Signature Input Mode -->
@@ -163,7 +253,10 @@
 
                 <!-- REORDER PAGES TOOL -->
                 <div id="tool-reorder-pages" class="tool-view">
-                    <h2>// REORDER PAGES</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// REORDER PAGES</h2>
+                        <button id="reset-reorder" class="reset-btn" onclick="ReorderModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="reorder-status">Load a PDF to reorder its pages.</p>
                     <p style="margin-top: 10px; font-weight: bold; font-size: 0.9rem;">DRAG AND DROP PAGES TO REORDER:</p>
                     
@@ -174,7 +267,10 @@
 
                 <!-- COMPRESS TOOL -->
                 <div id="tool-compress" class="tool-view">
-                    <h2>// COMPRESS PDF</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// COMPRESS PDF</h2>
+                        <button id="reset-compress" class="reset-btn" onclick="CompressModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="compress-status">Load a PDF to optimize object streams.</p>
                     <p style="margin-top: 10px; font-size: 0.9rem;"><i>Note: This performs structural optimization. It removes dead objects and compresses metadata.</i></p>
                     
@@ -183,43 +279,158 @@
 
                 <!-- AUTO-STAMPER TOOL -->
                 <div id="tool-stamp" class="tool-view">
-                    <h2>// AUTO-STAMPER (PAGE NUMBERS)</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// AUTO-STAMPER (PAGE NUMBERS)</h2>
+                        <button id="reset-stamp" class="reset-btn" onclick="StampModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="stamp-status">Load a PDF to embed page numbers.</p>
                     
                     <div class="control-bar" style="margin-top: 15px;">
                         <select id="stamp-position" class="brutal-input">
                             <option value="bottom">BOTTOM CENTER</option>
+                            <option value="bottom-right">BOTTOM RIGHT</option>
+                            <option value="bottom-left">BOTTOM LEFT</option>
                             <option value="top">TOP CENTER</option>
+                            <option value="top-right">TOP RIGHT</option>
+                            <option value="top-left">TOP LEFT</option>
                         </select>
-                        <!-- Allows the user to customize the text format -->
-                        <input type="text" id="stamp-format" class="brutal-input" value="Page {n} of {total}" style="width: 250px;">
+                        <input type="text" id="stamp-format" class="brutal-input" value="Page {n} of {total}" placeholder="Format (e.g. Page {n} of {total})">
                     </div>
-                    <p style="margin-top: 10px; font-size: 0.85rem; font-weight: bold;"><i>Use {n} for current page, and {total} for total pages.</i></p>
+
+                    <!-- CUSTOM STAMP STYLING CONTROLS -->
+                    <div class="control-bar" style="margin-top: 10px;">
+                        <select id="stamp-size" class="brutal-input">
+                            <option value="10">FONT: 10PX (COMPACT)</option>
+                            <option value="12" selected>FONT: 12PX (STANDARD)</option>
+                            <option value="16">FONT: 16PX (MEDIUM)</option>
+                            <option value="20">FONT: 20PX (LARGE)</option>
+                        </select>
+                        <select id="stamp-color" class="brutal-input">
+                            <option value="black" selected>COLOR: SOLID BLACK</option>
+                            <option value="red">COLOR: STAMP RED</option>
+                            <option value="blue">COLOR: DEEP BLUE</option>
+                            <option value="white">COLOR: WHITE (ON PILL)</option>
+                        </select>
+                        <select id="stamp-style" class="brutal-input">
+                            <option value="plain" selected>STYLE: CLEAN TEXT</option>
+                            <option value="pill">STYLE: SOLID PILL BADGE</option>
+                            <option value="box">STYLE: FRAMED BOX</option>
+                        </select>
+                        <select id="stamp-margin" class="brutal-input">
+                            <option value="15">MARGIN: 15PX (TIGHT)</option>
+                            <option value="25" selected>MARGIN: 25PX (STANDARD)</option>
+                            <option value="40">MARGIN: 40PX (SPACIOUS)</option>
+                        </select>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.85rem; font-weight: bold;"><i>Use {n} for current page, and {total} for total pages. Customize typography and frame badge above.</i></p>
                     
                     <button id="process-stamp" class="action-btn" disabled>STAMP ALL PAGES ➔</button>
                 </div>
 
                 <!-- METADATA GHOST TOOL -->
                 <div id="tool-ghost" class="tool-view">
-                    <h2>// THE GHOST (METADATA NUKE)</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// THE GHOST (METADATA NUKE)</h2>
+                        <button id="reset-ghost" class="reset-btn" onclick="GhostModule.reset()" style="display:none;">RESET</button>
+                    </div>
                     <p class="manifest-item" id="ghost-status">Load a PDF to scrub its hidden data.</p>
-                    <p style="margin-top: 15px; font-weight: bold; font-size: 1.1rem; color: var(--danger); border: 3px solid var(--danger); padding: 15px; background: #fff;">
-                        ⚠️ WARNING: This will permanently erase the document's Author, Title, Software Origins, Keywords, and Creation/Modification Dates.
+                    <p style="margin-top: 15px; font-weight: bold; font-size: 1.05rem; color: var(--danger); border: 3px solid var(--danger); padding: 14px; background: #fff; display: flex; align-items: flex-start; gap: 10px;">
+                        <svg class="inline-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span>WARNING: This will permanently erase the document's Author, Title, Software Origins, Keywords, and Creation/Modification Dates.</span>
                     </p>
                     
-                    <button id="process-ghost" class="action-btn" style="background: var(--danger); color: white;" disabled>☢️ EXECUTE METADATA WIPE</button>
+                    <button id="process-ghost" class="action-btn" style="background: var(--danger); color: white;" disabled>
+                        <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/></svg>
+                        <span>EXECUTE METADATA WIPE ➔</span>
+                    </button>
+                </div>
+
+                <!-- ENCRYPT / PASSWORD PROTECT TOOL -->
+                <div id="tool-encrypt" class="tool-view">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>// ENCRYPT & PASSWORD PROTECT</h2>
+                        <button id="reset-encrypt" class="reset-btn" onclick="EncryptModule.reset()" style="display:none;">RESET</button>
+                    </div>
+                    <p class="manifest-item" id="encrypt-status">Load a PDF to encrypt and set access credentials.</p>
+                    
+                    <div class="control-bar" style="margin-top: 15px;">
+                        <input type="password" id="encrypt-password" class="brutal-input" placeholder="Enter Open Password" style="flex: 1;">
+                        <input type="password" id="encrypt-confirm" class="brutal-input" placeholder="Confirm Password" style="flex: 1;">
+                    </div>
+
+                    <div class="control-bar" style="margin-top: 10px;">
+                        <select id="encrypt-algorithm" class="brutal-input">
+                            <option value="AES-256" selected>CIPHER: AES-256 (STANDARD / RECOMMENDED)</option>
+                            <option value="RC4">CIPHER: RC4-128 (LEGACY COMPATIBILITY)</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 14px; border: 3px solid var(--dark); padding: 12px 14px; background: #FFFFFF; box-shadow: var(--brutal-shadow-sm);">
+                        <p style="font-weight: 800; font-size: 0.88rem; margin-bottom: 8px; letter-spacing: 0.04em;">PERMISSIONS SPECIFICATION:</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px; font-weight: 700; font-size: 0.85rem;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="encrypt-perm-print" checked style="width: 18px; height: 18px; accent-color: var(--dark);">
+                                <span>ALLOW PRINTING</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="encrypt-perm-copy" checked style="width: 18px; height: 18px; accent-color: var(--dark);">
+                                <span>ALLOW COPYING TEXT & IMAGES</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="encrypt-perm-modify" checked style="width: 18px; height: 18px; accent-color: var(--dark);">
+                                <span>ALLOW MODIFYING CONTENT</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="process-encrypt" class="action-btn" style="margin-top: 15px;" onclick="EncryptModule.execute()" disabled>
+                        <svg class="tool-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>ENCRYPT & LOCK PDF ➔</span>
+                    </button>
                 </div>
             </section>
         </main>
     </div>
 
+    <!-- FULL-WINDOW DRAG & DROP OVERLAY -->
+    <div id="window-drag-overlay">
+        <div class="drag-overlay-box">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <h2>DROP FILES ANYWHERE</h2>
+            <p>// INGEST PROTOCOL ACTIVE: RELEASE TO LOAD INTO CURRENT TOOL</p>
+        </div>
+    </div>
+
+    <!-- PAGE PREVIEW LIGHTBOX -->
+    <div id="page-lightbox">
+        <div class="lightbox-card">
+            <div class="lightbox-header">
+                <span id="lightbox-title">// PAGE INSPECTOR</span>
+                <button id="lightbox-close" class="list-btn del" style="padding: 4px 8px; min-width: 32px; min-height: 32px;" title="Close (Esc)">
+                    <svg class="inline-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="lightbox-body">
+                <canvas id="lightbox-canvas" class="lightbox-canvas"></canvas>
+            </div>
+            <div class="lightbox-footer">
+                <button id="lightbox-prev" class="sub-btn">← PREVIOUS PAGE</button>
+                <span id="lightbox-counter" class="system-tag" style="font-weight: 800;">PAGE 1 / 1</span>
+                <button id="lightbox-next" class="sub-btn">NEXT PAGE →</button>
+            </div>
+        </div>
+    </div>
+
     <!-- THE BRUTAL FOOTER -->
     <footer class="brutal-footer-box">
         <div class="footer-content">
-            <h3>FREE TO USE // NO DATA STOLEN // PURE ANARCHY</h3>
-            <p>Your files never leave this browser window. Built with geometry and spite.</p>
+            <h3>FREE TO USE // NO DATA STOLEN</h3>
+            <p>Your files never leave this browser window. Build with geometry and spite.</p>
         </div>
     </footer>
+
+    <!-- CDN Encryption Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@pdfsmaller/pdf-encrypt/dist/pdf-encrypt.umd.js"></script>
 
     <!-- Modular JS -->
     <script src="js/core.js"></script>
@@ -234,5 +445,7 @@
     <script src="js/reorder.js"></script>
     <script src="js/stamp.js"></script>
     <script src="js/ghost.js"></script>
+    <script src="js/encrypt.js"></script>
+    <script src="js/pwa.js"></script>
 </body>
 </html>

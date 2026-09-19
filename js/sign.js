@@ -81,65 +81,110 @@ const SignModule = {
 
     async loadFile(fileObj) {
         this.activePdfBytes = fileObj.bytes;
-        document.getElementById('sign-status').innerHTML = `📄 Document ready: <b>${fileObj.name}</b>`;
+        const statusEl = document.getElementById('sign-status');
+        if (statusEl) {
+            statusEl.innerHTML = `${BrutalIcons.file} Document ready: <b>${fileObj.name}</b>`;
+        }
         document.getElementById('process-sign').disabled = false;
+        const resetBtn = document.getElementById('reset-sign');
+        if (resetBtn) resetBtn.style.display = 'inline-flex';
+        showBrutalToast(`Loaded ${fileObj.name} for signing.`, "info");
+    },
+
+    reset() {
+        this.activePdfBytes = null;
+        if (this.ctx) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const fileInput = document.getElementById('sign-img-upload');
+        if (fileInput) fileInput.value = "";
+        const statusEl = document.getElementById('sign-status');
+        if (statusEl) statusEl.innerHTML = "Load a PDF to sign.";
+        document.getElementById('process-sign').disabled = true;
+        const resetBtn = document.getElementById('reset-sign');
+        if (resetBtn) resetBtn.style.display = 'none';
+        showBrutalToast("Signature pad and document cleared.", "info");
     },
 
     async execute() {
-        const pdfDoc = await PDFLib.PDFDocument.load(this.activePdfBytes);
-        const mode = document.getElementById('sign-mode').value;
-        let pngImage;
-
-        if (mode === 'draw') {
-            // Get from Canvas
-            const dataUrl = this.canvas.toDataURL('image/png');
-            pngImage = await pdfDoc.embedPng(dataUrl);
-        } else {
-            // Get from File Input
-            const fileInput = document.getElementById('sign-img-upload');
-            if (!fileInput.files.length) return alert("Please upload a signature image.");
-            const imgBytes = await fileInput.files[0].arrayBuffer();
-            pngImage = await pdfDoc.embedPng(imgBytes); // Assuming PNG for transparency
+        if (!this.activePdfBytes) {
+            showBrutalToast("Please load a PDF to sign.", "warning");
+            return;
         }
 
-        const pages = pdfDoc.getPages();
-        const targetPageValue = document.getElementById('sign-page').value;
-        const targetPage = targetPageValue === 'first' ? pages[0] : pages[pages.length - 1];
+        const btn = document.getElementById('process-sign');
+        btn.disabled = true;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `${BrutalIcons.spinner} <span>EMBEDDING SIGNATURE...</span>`;
 
-        const { width, height } = targetPage.getSize();
-        
-        // Scale signature to a reasonable size relative to the page
-        const maxSignWidth = width * 0.3; // Take up max 30% of page width
-        const pngDims = pngImage.scaleToFit(maxSignWidth, maxSignWidth);
+        try {
+            const pdfDoc = await PDFLib.PDFDocument.load(this.activePdfBytes);
+            const mode = document.getElementById('sign-mode').value;
+            let pngImage;
 
-        // Calculate Position Placement
-        const position = document.getElementById('sign-position').value;
-        let x = 50, y = 50; // default margin
-        
-        if (position === 'bottom-left') {
-            x = 50;
-            y = 50;
-        } else if (position === 'bottom-right') {
-            x = width - pngDims.width - 50;
-            y = 50;
-        } else if (position === 'top-left') {
-            x = 50;
-            y = height - pngDims.height - 50;
-        } else if (position === 'top-right') {
-            x = width - pngDims.width - 50;
-            y = height - pngDims.height - 50;
+            if (mode === 'draw') {
+                // Get from Canvas
+                const dataUrl = this.canvas.toDataURL('image/png');
+                pngImage = await pdfDoc.embedPng(dataUrl);
+            } else {
+                // Get from File Input
+                const fileInput = document.getElementById('sign-img-upload');
+                if (!fileInput.files.length) {
+                    showBrutalToast("Please upload a signature image.", "warning");
+                    return;
+                }
+                const imgBytes = await fileInput.files[0].arrayBuffer();
+                pngImage = await pdfDoc.embedPng(imgBytes);
+            }
+
+            const pages = pdfDoc.getPages();
+            const targetPageValue = document.getElementById('sign-page').value;
+            const targetPage = targetPageValue === 'first' ? pages[0] : pages[pages.length - 1];
+
+            const { width, height } = targetPage.getSize();
+            
+            // Scale signature to a reasonable size relative to the page
+            const maxSignWidth = width * 0.3; // Take up max 30% of page width
+            const pngDims = pngImage.scaleToFit(maxSignWidth, maxSignWidth);
+
+            // Calculate Position Placement
+            const position = document.getElementById('sign-position').value;
+            let x = 50, y = 50; // default margin
+            
+            if (position === 'bottom-left') {
+                x = 50;
+                y = 50;
+            } else if (position === 'bottom-right') {
+                x = width - pngDims.width - 50;
+                y = 50;
+            } else if (position === 'top-left') {
+                x = 50;
+                y = height - pngDims.height - 50;
+            } else if (position === 'top-right') {
+                x = width - pngDims.width - 50;
+                y = height - pngDims.height - 50;
+            }
+
+            targetPage.drawImage(pngImage, {
+                x: x,
+                y: y,
+                width: pngDims.width,
+                height: pngDims.height,
+            });
+
+            const bytes = await pdfDoc.save();
+            downloadBlob(bytes, "signed_brutal.pdf");
+            showBrutalToast("Signature successfully embedded and downloaded!", "success");
+        } catch (err) {
+            console.error(err);
+            showBrutalToast("Failed to sign PDF: " + err.message, "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
         }
-
-        targetPage.drawImage(pngImage, {
-            x: x,
-            y: y,
-            width: pngDims.width,
-            height: pngDims.height,
-        });
-
-        const bytes = await pdfDoc.save();
-        downloadBlob(bytes, "signed_brutal.pdf");
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => SignModule.init());
+window.SignModule = SignModule;
+document.addEventListener('DOMContentLoaded', () => {
+    SignModule.init();
+    document.getElementById('reset-sign')?.addEventListener('click', () => SignModule.reset());
+});

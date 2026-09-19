@@ -1,0 +1,8 @@
+{
+  "name": "PDF // BRUTAL_BOX",
+  "description": "100% client-side, privacy-first PDF manipulation toolkit with zero data leaks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
